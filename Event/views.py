@@ -69,8 +69,10 @@ def update_event(request, id):
             events.save()
 
             events.participant.set([Participant.objects.get(id=p_id) for p_id in participant_ids])
+            messages.success(request,'the event edited successfully')
+            return redirect('dashboard')
             
-            return HttpResponse("Event updated successfully")
+            
 
     else:
        
