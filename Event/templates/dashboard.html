@@ -1,0 +1,171 @@
+{% extends "navbar.html" %}
+
+    {% block event %}
+   <div class="grid grid-cols-4 gap-4 p-4">
+
+  <div class="bg-orange-500 text-white p-6 rounded-lg text-center">
+    <p class="text-4xl">{{count.participant_count}}</p>
+    <h1 class="text-gray-100 text-sm">total Number of participant</h1>
+    
+
+  </div>
+  <a href="{% url 'dashboard' %}?type=all_event">
+
+    <div class="bg-orange-500 text-white p-6 rounded-lg text-center">
+    <p class="text-4xl">{{count.total}}</p>
+    <h1 class="text-gray-100 text-sm">total Number of Events</h1>
+    
+
+  </div>
+
+  </a>
+
+  <a href="{% url 'dashboard' %}?type=upcoming">
+
+    <div class="bg-orange-500 text-white p-6 rounded-lg text-center">
+    <p class="text-4xl">{{count.upcoming}}</p>
+    <h1 class="text-gray-100 text-sm">total Number of Upcomig Events</h1>
+    
+
+  </div>
+
+  </a>
+
+  <a href="{% url 'dashboard' %}?type=past">
+    <div class="bg-orange-500 text-white p-6 rounded-lg text-center">
+    <p class="text-4xl">{{count.past}}</p>
+    <h1 class="text-gray-100 text-sm">total Number of Past Events</h1>
+    
+
+  </div>
+  </a>
+
+
+</div>
+
+<div class="text-center mt-4 mb-8">
+  <a href="{% url 'create' %}" class="bg-green-500 px-4 py-1 ml-4">create event</a>
+</div>
+
+<div class="mt-4">
+  
+  {% if messages %}
+  {% for message in messages %}
+  <div class="px-2 py-1 {% if 'success' in message.tags %} bg-green-500 {% endif %} ">
+    {{message}}
+
+
+  </div>
+  
+  {% endfor %}
+    
+  {% endif %}
+</div>
+
+<h1 class="text-4xl mt-6 mb-6">{{event_condition}}</h1>
+<div class="m-6">
+
+<div class="bg-white rounded-xl shadow sm ">
+  <div class="grid grid-cols-3 p-4 border-b border-gray-100 text-sm text-gray-500  gap-4 items-center">
+    <div>Event Name</div>
+     <div>Category</div>
+      <div>Time</div>
+               
+    
+  </div>
+ 
+
+
+  {% for event in events %}
+    
+
+  <div class="divide-y divide-gray-100">
+
+  <div class="grid grid-cols-3 p-4 gap-4 items-center">
+
+  <div class="flex items-center gap-2">
+    
+    <div >
+      <span>{{event.name}}</span>
+      <a href="{% url 'update_event' event.id %}"><button class="px-2 py-1 bg-green-500">edit</button></a>
+     <form action="{% url "delete_event" event.id %}" method="POST" onsubmit="return confirm('Are you sure you want to delete this event?')">
+    {% csrf_token %}
+    <button type="submit" class="px-2 py-1 bg-green-500">Delete</button>
+</form>
+
+    </div>
+  </div>
+  <div>
+
+    <h1>{{event.category}}</h1>
+  </div>
+  <div>
+    <div class="flex -space-x-2">
+      <h1>{{event.time}}</h1>
+    </div>
+  </div>
+ 
+</div>
+ 
+</div>
+{% empty %}
+  <div class="p-4 text-center text-gray-500 ">
+    No data for {{event_condition}}
+  </div>
+
+  {% endfor %}
+
+
+
+</div>
+</div>
+{% endblock event %}
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+           
+
+           
+
+           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
