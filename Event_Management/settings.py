@@ -25,9 +25,14 @@ SECRET_KEY = 'django-insecure-sb*yhj%*$l2*7vl&-1re+8r(!9djng!6-!u3k$nd_e*h_ygf3i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGIN =['https://*.onrender.com','http://127.0.0.1:8000']
+# ALLOWED_HOSTS = ['*']
+# CSRF_TRUSTED_ORIGIN =['https://*.onrender.com','http://127.0.0.1:8000']
 
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://event-management-xlch.onrender.com",
+    "http://127.0.0.1:8000"
+]
 
 # Application definition
 
