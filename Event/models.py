@@ -15,10 +15,18 @@ class Event(models.Model):
         return self.name
 
 
+# class Participant(models.Model):
+#     name = models.CharField(max_length=100)
+#     email = models.EmailField()
+#     events = models.ManyToManyField(Event,related_name="participant")
+
+#     def __str__(self):
+#         return self.name
+
 class Participant(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
-    events = models.ManyToManyField(Event,related_name="participant")
+    events = models.ManyToManyField(Event, related_name="participant", blank=True)
 
     def __str__(self):
         return self.name
