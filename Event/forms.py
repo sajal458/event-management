@@ -1,5 +1,7 @@
 from django import forms
 from Event.models import Event
+from .models import Participant, Category
+
 
 class TaskModel(forms.Form):
     name = forms.CharField(
@@ -48,6 +50,27 @@ class TaskModel(forms.Form):
         }),
         label="Participants"
     )
+
+
+class ParticipantForm(forms.ModelForm):
+    class Meta:
+        model = Participant
+        fields = ['name', 'email', 'events']
+        widgets = {
+            'name': forms.TextInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"}),
+            'email': forms.EmailInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"}),
+            'events': forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"})
+        }
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name', 'description']
+        widgets = {
+            'name': forms.TextInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"}),
+            'description': forms.Textarea(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"})
+        }
+
 
     def __init__(self, *args, **kwargs):
         participant = kwargs.pop("participant", [])

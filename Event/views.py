@@ -1,10 +1,11 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from Event.forms import TaskModel
+from Event.forms import TaskModel,Participant, CategoryForm
 from Event.models import Participant,Category,Event
 from django.db.models import Count,Q
 from django.utils import timezone
 from django.contrib import messages
+
 # Create your views here.
 def view_task(request):
     return HttpResponse("hello")
@@ -193,3 +194,29 @@ def event_detail(request,id):
     }
     return render(request,'details.html',context)
 
+
+
+
+
+
+def add_participant(request):
+    if request.method == "POST":
+        form = ParticipantForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Participant added successfully.")
+            return redirect('dashboard')  # Or change to where you want to go
+    else:
+        form = ParticipantForm()
+    return render(request, "add_participant.html", {"form": form})
+
+def add_category(request):
+    if request.method == "POST":
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Category added successfully.")
+            return redirect('dashboard')
+    else:
+        form = CategoryForm()
+    return render(request, "add_category.html", {"form": form})

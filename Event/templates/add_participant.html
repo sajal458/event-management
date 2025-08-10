@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Participant</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+<body class='bg-orange-100'>
+    <div class="pc">
+        <a href="{% url 'add_participant' %}">
+            <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Create Person</button>
+        </a>
+        <a href="{% url 'add_category' %}">
+            <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Create Category</button>
+        </a>
+    </div>
+    <div class="flex items-center justify-center">
+        <form method="POST" class="space-y-6 bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
