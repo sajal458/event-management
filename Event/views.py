@@ -58,7 +58,7 @@ def create_task(request):
                 location=data["location"],
                 category=Category.objects.get(id=data["category"])
             )
-            # Add participants
+            
             event.participant.add(*Participant.objects.filter(id__in=data["participant"]))
             messages.success(request, 'Event added successfully')
             return redirect('dashboard')
@@ -215,7 +215,7 @@ def home(request):
 
         events=Event.objects.filter(category__name='Technology')
     elif type =='social':
-        events=Event.objects.filter(category__name='Social')
+        events=Event.objects.filter(category__name='social event')
     
 
 
@@ -265,7 +265,7 @@ def add_participant(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Participant added successfully.")
-            return redirect('dashboard')  # Or change to where you want to go
+            return redirect('dashboard')  
     else:
         form = ParticipantForm()
     return render(request, "add_participant.html", {"form": form})
