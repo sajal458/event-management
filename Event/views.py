@@ -235,7 +235,7 @@ def home(request):
     
     count = Event.objects.aggregate(
         technology_count=Count('id', filter=Q(category__name__iexact='Technology')),
-        social_count=Count('id', filter=Q(category__name__iexact='Social'))
+        social_count=Count('id', filter=Q(category__name__iexact='social event'))
     )
 
     context={
