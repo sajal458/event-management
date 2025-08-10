@@ -11,35 +11,116 @@ def view_task(request):
     return HttpResponse("hello")
 
 
-def create_task(request):
-    participant=Participant.objects.all()
-    category=Category.objects.all()
-    form=TaskModel(participant=participant,category=category)
-    if request.method == "POST":
-        form=TaskModel(request.POST,participant=participant,category=category)
+# def create_task(request):
+#     participant=Participant.objects.all()
+#     category=Category.objects.all()
+#     form=TaskModel(participant=participant,category=category)
+#     if request.method == "POST":
+#         form=TaskModel(request.POST,participant=participant,category=category)
        
-        if form.is_valid():
-           data=form.cleaned_data
-           name=data.get("name")
-           description = data.get('description')
-           date=data.get("date")
-           time=data.get("time")
-           location = data.get("location")
-           category_id=data.get("category")
-           participant=data.get("participant")
-           event=Event.objects.create(name=name,description=description,date =date,time=time,location=location,category=Category.objects.get(id=category_id))
-           for p_id in participant:
-               par=Participant.objects.get(id=p_id)
-               event.participant.add(par)
-           messages.success(request,'event added successfully')
-           return redirect('dashboard')
+#         if form.is_valid():
+#            data=form.cleaned_data
+#            name=data.get("name")
+#            description = data.get('description')
+#            date=data.get("date")
+#            time=data.get("time")
+#            location = data.get("location")
+#            category_id=data.get("category")
+#            participant=data.get("participant")
+#            event=Event.objects.create(name=name,description=description,date =date,time=time,location=location,category=Category.objects.get(id=category_id))
+#            for p_id in participant:
+#                par=Participant.objects.get(id=p_id)
+#                event.participant.add(par)
+#            messages.success(request,'event added successfully')
+#            return redirect('dashboard')
                
 
 
-    context={
-        "form":form
-    }
-    return render(request,"form.html",context)
+#     context={
+#         "form":form
+#     }
+#     return render(request,"form.html",context)
+
+def create_task(request):
+    participant = Participant.objects.all()
+    category = Category.objects.all()
+    form = TaskModel(participant=participant, category=category)
+
+    if request.method == "POST":
+        form = TaskModel(request.POST, participant=participant, category=category)
+        if form.is_valid():
+            data = form.cleaned_data
+            event = Event.objects.create(
+                name=data["name"],
+                description=data["description"],
+                date=data["date"],
+                time=data["time"],
+                location=data["location"],
+                category=Category.objects.get(id=data["category"])
+            )
+            # Add participants
+            event.participant.add(*Participant.objects.filter(id__in=data["participant"]))
+            messages.success(request, 'Event added successfully')
+            return redirect('dashboard')
+
+    return render(request, "form.html", {"form": form})
+
+
+# def update_event(request, id):
+#     events = Event.objects.get(id=id)
+#     participant = Participant.objects.all()
+#     category = Category.objects.all()
+
+#     if request.method == "POST":
+#         form = TaskModel(request.POST, participant=participant, category=category)
+#         if form.is_valid():
+#             data = form.cleaned_data
+#             name = data.get("name")
+#             description = data.get('description')
+#             date = data.get("date")
+#             time = data.get("time")
+#             location = data.get("location")
+#             category_id = data.get("category")
+#             participant_ids = data.get("participant")
+
+        
+#             events.name = name
+#             events.description = description
+#             events.date = date
+#             events.time = time
+#             events.location = location
+#             events.category = Category.objects.get(id=category_id)
+#             events.save()
+
+#             events.participant.set([Participant.objects.get(id=p_id) for p_id in participant_ids])
+#             messages.success(request,'the event edited successfully')
+#             return redirect('dashboard')
+            
+            
+
+#     else:
+       
+#         form = TaskModel(
+#             participant=participant,
+#             category=category,
+#             initial={
+#                 'name': events.name,
+#                 'description': events.description,
+#                 'date': events.date,
+#                 'time': events.time,
+#                 'location': events.location,
+#                 'category': events.category.id,
+#                 'participant': [p.id for p in events.participant.all()]
+#             }
+#         )
+
+                
+
+
+#     context={
+#         "form":form
+#     }
+#     return render(request,"form.html",context)
 
 
 
@@ -52,31 +133,18 @@ def update_event(request, id):
         form = TaskModel(request.POST, participant=participant, category=category)
         if form.is_valid():
             data = form.cleaned_data
-            name = data.get("name")
-            description = data.get('description')
-            date = data.get("date")
-            time = data.get("time")
-            location = data.get("location")
-            category_id = data.get("category")
-            participant_ids = data.get("participant")
-
-        
-            events.name = name
-            events.description = description
-            events.date = date
-            events.time = time
-            events.location = location
-            events.category = Category.objects.get(id=category_id)
+            events.name = data["name"]
+            events.description = data["description"]
+            events.date = data["date"]
+            events.time = data["time"]
+            events.location = data["location"]
+            events.category = Category.objects.get(id=data["category"])
             events.save()
 
-            events.participant.set([Participant.objects.get(id=p_id) for p_id in participant_ids])
-            messages.success(request,'the event edited successfully')
+            events.participant.set(Participant.objects.filter(id__in=data["participant"]))
+            messages.success(request, 'The event was edited successfully')
             return redirect('dashboard')
-            
-            
-
     else:
-       
         form = TaskModel(
             participant=participant,
             category=category,
@@ -87,19 +155,11 @@ def update_event(request, id):
                 'time': events.time,
                 'location': events.location,
                 'category': events.category.id,
-                'participant': [p.id for p in events.participant.all()]
+                'participant': events.participant.values_list('id', flat=True)
             }
         )
 
-                
-
-
-    context={
-        "form":form
-    }
-    return render(request,"form.html",context)
-
-
+    return render(request, "form.html", {"form": form})
 
 def delete_event(request,id):
     if request.method =="POST":
