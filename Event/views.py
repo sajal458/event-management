@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from Event.forms import TaskModel,Participant, CategoryForm
+from Event.forms import TaskModel,ParticipantForm, CategoryForm
 from Event.models import Participant,Category,Event
 from django.db.models import Count,Q
 from django.utils import timezone
