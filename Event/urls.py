@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import view_task,create_task,show_dashboard,home,update_event,delete_event,event_detail,add_participant,add_category
+from .views import view_task,create_task,show_dashboard,home,update_event,delete_event,event_detail,add_category,rsvp,dashboard
 urlpatterns = [
     path('show/',view_task),
     path("create-task/",create_task,name="create"),
@@ -8,7 +8,9 @@ urlpatterns = [
     path("update-event/<int:id>/",update_event,name="update_event"),
     path("delete-event/<int:id>/",delete_event,name="delete_event"),
     path("details/<int:id>/",event_detail,name="details"),
-    path("add-participant/", add_participant, name="add_participant"),
+    #path("add-participant/", add_participant, name="add_participant"),
     path("add-category/", add_category, name="add_category"),
+    path('rsvp/<int:event_id>/',rsvp,name='rsvp'),
+    path('select-dashboard',dashboard,name='select-dashboard')
     
 ]

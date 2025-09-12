@@ -1,4 +1,4 @@
-{% comment %} {% load static %}
+ {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,12 +9,12 @@
 </head>
 <body class='bg-orange-100'>
     <div class="pc">
-        <a href="{% url 'add_participant' %}">
+        {% comment %} <a href="{% url 'add_participant' %}">
             <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Create Person</button>
-        </a>
-        <a href="{% url 'add_category' %}">
+        </a> {% endcomment %}
+        {% comment %} <a href="{% url 'add_category' %}">
             <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Create Category</button>
-        </a>
+        </a> {% endcomment %}
     </div>
     <div class="flex items-center justify-center">
         <form method="POST" class="space-y-6 bg-white p-8 rounded-xl shadow-md w-full max-w-md">
@@ -24,4 +24,4 @@
         </form>
     </div>
 </body>
-</html> {% endcomment %}
+</html> 

@@ -1,80 +1,152 @@
+# from django import forms
+# from Event.models import Event
+# from .models import  Category
+
+
+
+
 from django import forms
-from Event.models import Event
-from .models import Participant, Category
+from django.contrib.auth.models import User
+from .models import Event, Category
 
 
-class TaskModel(forms.Form):
-    name = forms.CharField(
-        max_length=100,
-        label="Event name",
-        widget=forms.TextInput(attrs={
-            "class": "w-full px-4 py-2 border border-gray-300 rounded-md"
-        })
-    )
-    description = forms.CharField(
-        label="Description",
-        widget=forms.Textarea(attrs={
-            "class": "w-full px-4 py-2 border border-gray-300 rounded-md"
-        })
-    )
-    date = forms.DateField(
-        label="Event date",
-        widget=forms.SelectDateWidget(attrs={
-            "class": "inline-block w-auto mx-1 px-2 py-2 border border-gray-300 rounded-md"
-        })
-    )
-    time = forms.TimeField(
-        label="Event time",
-        widget=forms.TimeInput(format='%H:%M', attrs={
-            "placeholder": "HH-MM",
-            "class": "w-full px-4 py-2 border border-gray-300 rounded-md "
-        })
-    )
-    location = forms.CharField(
-        max_length=100,
-        label="Event location",
-        widget=forms.TextInput(attrs={
-            "class": "w-full px-4 py-2 border border-gray-300 rounded-md "
-        })
-    )
-    category = forms.ChoiceField(
-        label="Category",
-        widget=forms.Select(attrs={
-            "class": "w-full px-4 py-2 border border-gray-300 rounded-md "
-        })
-    )
-    participant = forms.MultipleChoiceField(
+class TaskModel(forms.ModelForm):
+    participants = forms.ModelMultipleChoiceField(
+        queryset=User.objects.all(),
         widget=forms.CheckboxSelectMultiple(attrs={
             "class": "space-y-2"
         }),
-        label="Participants"
+        label="Participants",
+        required=False
+    )
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        widget=forms.Select(attrs={
+            "class": "w-full px-4 py-2 border border-gray-300 rounded-md"
+        }),
+        label="Category"
+    )
+    asset = forms.FileField(
+        required=False,
+        widget=forms.ClearableFileInput(attrs={
+            "class": "w-full px-4 py-2 border border-gray-300 rounded-md"
+        }),
+        label="Image"
     )
 
-    def __init__(self, *args, **kwargs):
-        participant = kwargs.pop("participant", [])
-        category = kwargs.pop("category", [])
-        super().__init__(*args, **kwargs)
-
-        self.fields["participant"].choices = [(p.id, p.name) for p in participant]
-        self.fields["category"].choices = [(c.id, c.name) for c in category]
-
-
-class ParticipantForm(forms.ModelForm):
     class Meta:
-        model = Participant
-        fields = ['name', 'email', 'events']
+        model = Event
+        fields = ["name", "description", "date", "time", "location","asset", "category", "participants"]
         widgets = {
-            'name': forms.TextInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"}),
-            'email': forms.EmailInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"}),
-            'events': forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"})
+            "name": forms.TextInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"}),
+            "description": forms.Textarea(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"}),
+            "date": forms.SelectDateWidget(attrs={"class": "inline-block w-auto mx-1 px-2 py-2 border border-gray-300 rounded-md"}),
+            "time": forms.TimeInput(format="%H:%M", attrs={"placeholder": "HH-MM", "class": "w-full px-4 py-2 border border-gray-300 rounded-md"}),
+            "location": forms.TextInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"}),
         }
 
 
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ['name', 'description']
+        fields = ["name", "description"]
         widgets = {
-            'name': forms.TextInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"}),
-            'description': forms.Textarea(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"})
+            "name": forms.TextInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"}),
+            "description": forms.Textarea(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"})
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# class TaskModel(forms.Form):
+#     name = forms.CharField(
+#         max_length=100,
+#         label="Event name",
+#         widget=forms.TextInput(attrs={
+#             "class": "w-full px-4 py-2 border border-gray-300 rounded-md"
+#         })
+#     )
+#     description = forms.CharField(
+#         label="Description",
+#         widget=forms.Textarea(attrs={
+#             "class": "w-full px-4 py-2 border border-gray-300 rounded-md"
+#         })
+#     )
+#     date = forms.DateField(
+#         label="Event date",
+#         widget=forms.SelectDateWidget(attrs={
+#             "class": "inline-block w-auto mx-1 px-2 py-2 border border-gray-300 rounded-md"
+#         })
+#     )
+#     time = forms.TimeField(
+#         label="Event time",
+#         widget=forms.TimeInput(format='%H:%M', attrs={
+#             "placeholder": "HH-MM",
+#             "class": "w-full px-4 py-2 border border-gray-300 rounded-md "
+#         })
+#     )
+#     location = forms.CharField(
+#         max_length=100,
+#         label="Event location",
+#         widget=forms.TextInput(attrs={
+#             "class": "w-full px-4 py-2 border border-gray-300 rounded-md "
+#         })
+#     )
+#     category = forms.ChoiceField(
+#         label="Category",
+#         widget=forms.Select(attrs={
+#             "class": "w-full px-4 py-2 border border-gray-300 rounded-md "
+#         })
+#     )
+#     participant = forms.MultipleChoiceField(
+#         widget=forms.CheckboxSelectMultiple(attrs={
+#             "class": "space-y-2"
+#         }),
+#         label="Participants"
+#     )
+
+#     def __init__(self, *args, **kwargs):
+#         participant = kwargs.pop("participant", [])
+#         category = kwargs.pop("category", [])
+#         super().__init__(*args, **kwargs)
+
+#         self.fields["participant"].choices = [(p.id, p.name) for p in participant]
+#         self.fields["category"].choices = [(c.id, c.name) for c in category]
+
+
+# class ParticipantForm(forms.ModelForm):
+#     class Meta:
+#         model = Participant
+#         fields = ['name', 'email', 'events']
+#         widgets = {
+#             'name': forms.TextInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"}),
+#             'email': forms.EmailInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"}),
+#             'events': forms.CheckboxSelectMultiple(attrs={"class": "space-y-2"})
+#         }
+
+
+# class CategoryForm(forms.ModelForm):
+#     class Meta:
+#         model = Category
+#         fields = ['name', 'description']
+#         widgets = {
+#             'name': forms.TextInput(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"}),
+#             'description': forms.Textarea(attrs={"class": "w-full px-4 py-2 border border-gray-300 rounded-md"})
+#         }
+
+
+

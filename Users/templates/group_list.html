@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+<body >
+ {% include 'non_log.html' %}
+  <div class='p-6'>
+    <table class="table-auto border border-gray-300 w-full text-left">
+    <!-- Table Head -->
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="px-4 py-2 border">Role</th>
+        <th class="px-4 py-2 border">Permission</th>
+        
+      </tr>
+    </thead>
+
+    <!-- Table Body -->
+    <tbody>
+      
+       {% for group in groups %}
+       <tr>
+        <td class="px-4 py-2 border">{{group.name}}</td>
+        <td class="px-4 py-2 border">
+            <ul>
+                {% for permission in group.permissions.all %}
+                <li>{{permission.name}}|{{permission.codename}}</li>
+                {% empty %}
+                <span>no perrmission assign </span>
+                {% endfor %}
+                
+            </ul>
+        </td>
+        
+        </tr>
+       {% endfor %}
+      
+    </tbody>
+  </table>
+  </div>
+
+</body>
+</html>

@@ -1,12 +1,12 @@
-{% extends "navbar.html" %}
+{% extends "user_nav.html" %}
 
 
   
 
-{% block event %}
+{% block events %}
   
 
-<div class="grid grid-cols-2 gap-4 p-4 items-center">
+<!-- <div class="grid grid-cols-2 gap-4 p-4 items-center">
 
 <a href="{% url 'home' %}?type=social"><div class="bg-orange-500 text-white p-6 rounded-lg text-center">
     <p class="text-4xl">{{count.social_count}}</p>
@@ -27,9 +27,23 @@
   </a>
 
 
+</div> -->
+
+<div class="grid grid-cols-2 gap-4 p-4">
+  <a href="{% url 'home' %}?type=social">
+    <div class="bg-orange-500 text-white p-6 rounded-lg text-center h-full">
+      <p class="text-4xl">{{count.social_count}}</p>
+      <h1 class="text-gray-100 text-sm">Social</h1>
+    </div>
+  </a>
+
+  <a href="{% url 'home' %}?type=technology">
+    <div class="bg-orange-500 text-white p-6 rounded-lg text-center h-full">
+      <p class="text-4xl">{{count.technology_count}}</p>
+      <h1 class="text-gray-100 text-sm">Technology</h1>
+    </div>
+  </a>
 </div>
-
-
 
 
     <div class="flex justify-center">
@@ -121,18 +135,49 @@
 
 </div>
 </div> -->
+<div class="text-center bg-green-500">
+  {% if messages %}
+    <div class="font-semibold text-red-500">
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+
+
 
 <div class="mt-6">
 
   <div class="grid grid-cols-4 gap-4 px-4">
 
     {% for event in events %}
-          <div class="bg-gray-100 rounded-lg shadow-md text-center p-4 hover:bg-orange-300">
+          <!-- <div class="bg-gray-100 rounded-lg shadow-md text-center p-4 hover:bg-orange-300">
               <h1 class="text-lg font-bold">{{ event.name }}</h1>
               <p>{{ event.date }}</p>
               <p class="mb-4">{{ event.time }}</p>
               <a href="{% url 'details' event.id %}" class="bg-blue-500 px-2 py-1" >details</a>
-         </div>
+              <a href="{% url 'rsvp' event.id %}" class="bg-green-500 px-2 py-1">rsvp</a>
+         </div> -->
+         <div class="bg-gray-100 rounded-lg shadow-md text-center p-4 hover:bg-orange-300">
+
+  {% if event.asset %}
+    <img src="{{ event.asset.url }}" alt="{{ event.name }}" class="w-full h-48 object-cover rounded-md mb-3">
+  {% endif %}
+
+  <h1 class="text-lg font-bold">{{ event.name }}</h1>
+  <p>{{ event.date }}</p>
+  <p class="mb-4">{{ event.time }}</p>
+
+  <a href="{% url 'details' event.id %}" class="bg-blue-500 text-white px-2 py-1 rounded">Details</a>
+  <!-- <a href="{% url 'rsvp' event.id %}" class="bg-green-500 text-white px-2 py-1 rounded">RSVP</a> -->
+   {% if user in event.participants.all %}
+  <span class="bg-red-500 text-white px-2 py-1 rounded">Already RSVP</span>
+{% else %}
+  <a href="{% url 'rsvp' event.id %}" class="bg-green-500 text-white px-2 py-1 rounded">RSVP</a>
+{% endif %}
+</div>
         {% empty %}
   <div class="p-4 text-center text-gray-700">
     Not found
@@ -140,5 +185,5 @@
     {% endfor %}
   </div>
 </div>  
-{% endblock event %}
+{% endblock events %}
 

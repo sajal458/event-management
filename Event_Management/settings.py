@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import dj_database_url
+from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,25 +21,34 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-sb*yhj%*$l2*7vl&-1re+8r(!9djng!6-!u3k$nd_e*h_ygf3i'
-
+# SECRET_KEY = 'django-insecure-sb*yhj%*$l2*7vl&-1re+8r(!9djng!6-!u3k$nd_e*h_ygf3i'
+SECRET_KEY=config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
+
+MEDIA_URL='/media/'
+MEDIA_ROOT=BASE_DIR / 'media'
 
 # ALLOWED_HOSTS = ['*']
 # CSRF_TRUSTED_ORIGIN =['https://*.onrender.com','http://127.0.0.1:8000']
 
 
+# ALLOWED_HOSTS = [
+#     'event-management-xlch.onrender.com',
+#     '127.0.0.1',
+#     'localhost'
+# ]
+
+
 ALLOWED_HOSTS = [
-    'event-management-xlch.onrender.com',
-    '127.0.0.1',
-    'localhost'
+ 
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://event-management-xlch.onrender.com",
-    "http://127.0.0.1:8000"
-]
+
+# CSRF_TRUSTED_ORIGINS = [
+#     "https://event-management-xlch.onrender.com",
+#     "http://127.0.0.1:8000"
+# ]
 
 # Application definition
 
@@ -49,7 +59,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Event'
+    'Event',
+    'Users',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -92,25 +104,26 @@ WSGI_APPLICATION = 'Event_Management.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'Event_Management',
-#         'USER': 'postgres',
-#         'PASSWORD': 'password',
-#         'HOST': 'localhost',
-#         'PORT': '5432'
-#     }
-# }
-
-
 DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://event_management_db_bvnc_user:wn8JrizLhZ6sSxRNBece5ZYrs9XTaQaC@dpg-d22cd5m3jp1c738oh06g-a.oregon-postgres.render.com/event_management_db_bvnc',
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'Event_Management',
+        'NAME' : config('DB_NAME',default=''),
+        'USER': config('USER',default=''),
+        'PASSWORD': config('PASSWORD',default=''),
+        'HOST': config('HOST',default=''),        
+        'PORT': config('PORT',cast=int)
+    }
 }
+
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         # Replace this value with your local database's connection string.
+#         default='postgresql://event_management_db_bvnc_user:wn8JrizLhZ6sSxRNBece5ZYrs9XTaQaC@dpg-d22cd5m3jp1c738oh06g-a.oregon-postgres.render.com/event_management_db_bvnc',
+#         conn_max_age=600
+#     )
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -155,3 +168,19 @@ STATICFILES_DIRS =[
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST=config('EMAIL_HOST')
+# EMAIL_USE_TLS = True
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = "shsajal8561@gmail.com"
+# EMAIL_HOST_PASSWORD = "iwib ugse eqyb hclj"
+EMAIL_HOST=config('EMAIL_HOST')
+EMAIL_USE_TLS=config('EMAIL_USE_TLS')
+EMAIL_PORT=config('EMAIL_PORT')
+EMAIL_HOST_USER=config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+
+
+FRONTEND_URLS= 'http://127.0.0.1:8000/'

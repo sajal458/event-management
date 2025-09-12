@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+<body>
+
+  {% include 'non_log.html' %}
+
+<div class='p-6'> 
+    <table class="table-auto border border-gray-300 w-full text-left">
+    
+    <thead>
+      <tr class="bg-gray-100">
+        <th class="px-4 py-2 border">User Name</th>
+        <th class="px-4 py-2 border">Groups</th>
+        <th class="px-4 py-2 border">Action</th>
+      </tr>
+    </thead>
+
+    
+    <tbody>
+      
+       {% for user in users %}
+       <tr>
+        <td class="px-4 py-2 border">{{user.username}}</td>
+        <td class="px-4 py-2 border">{{user.groups.first.name|default:"No group assigned"}}</td>
+        <td class="px-4 py-2 border">
+          <div class="flex justify-center">
+           <a href="{% url 'assign-role' user.id %}">
+             <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">
+                Details
+            </button>
+           </a>
+            </div>
+        </td>
+        </tr>
+       {% endfor %}
+      
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
