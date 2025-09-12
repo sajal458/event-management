@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = 'django-insecure-sb*yhj%*$l2*7vl&-1re+8r(!9djng!6-!u3k$nd_e*h_ygf3i'
 SECRET_KEY=config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 MEDIA_URL='/media/'
 MEDIA_ROOT=BASE_DIR / 'media'
