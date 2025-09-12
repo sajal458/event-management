@@ -29,15 +29,15 @@ DEBUG = True
 MEDIA_URL='/media/'
 MEDIA_ROOT=BASE_DIR / 'media'
 
-# ALLOWED_HOSTS = ['*']
-# CSRF_TRUSTED_ORIGIN =['https://*.onrender.com','http://127.0.0.1:8000']
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGIN =['https://*.onrender.com','http://127.0.0.1:8000']
 
 
-ALLOWED_HOSTS = [
-    'event-management-xlch.onrender.com',
-    '127.0.0.1',
-    'localhost'
-]
+# ALLOWED_HOSTS = [
+#     'event-management-xlch.onrender.com',
+#     '127.0.0.1',
+#     'localhost'
+# ]
 
 
 # ALLOWED_HOSTS = [
@@ -45,10 +45,10 @@ ALLOWED_HOSTS = [
 # ]
 
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://event-management-xlch.onrender.com",
-    "http://127.0.0.1:8000"
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     "https://event-management-xlch.onrender.com",
+#     "http://127.0.0.1:8000"
+# ]
 
 # Application definition
 
