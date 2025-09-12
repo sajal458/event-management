@@ -30,7 +30,7 @@ MEDIA_URL='/media/'
 MEDIA_ROOT=BASE_DIR / 'media'
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGIN =['https://*.onrender.com','http://127.0.0.1:8000']
+# CSRF_TRUSTED_ORIGIN =['https://*.onrender.com','http://127.0.0.1:8000']
 
 
 # ALLOWED_HOSTS = [
@@ -45,10 +45,10 @@ CSRF_TRUSTED_ORIGIN =['https://*.onrender.com','http://127.0.0.1:8000']
 # ]
 
 
-# CSRF_TRUSTED_ORIGINS = [
-#     "https://event-management-xlch.onrender.com",
-#     "http://127.0.0.1:8000"
-# ]
+CSRF_TRUSTED_ORIGINS = [
+    "https://event-management-xlch.onrender.com",
+    "http://127.0.0.1:8000"
+]
 
 # Application definition
 
@@ -64,9 +64,21 @@ INSTALLED_APPS = [
     'core',
 ]
 
+# MIDDLEWARE = [
+#     'django.middleware.security.SecurityMiddleware',
+#     'django.contrib.sessions.middleware.SessionMiddleware',
+#     'django.middleware.common.CommonMiddleware',
+#     'django.middleware.csrf.CsrfViewMiddleware',
+#     'django.contrib.auth.middleware.AuthenticationMiddleware',
+#     'django.contrib.messages.middleware.MessageMiddleware',
+#     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+# ]
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',   
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -159,10 +171,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS =[
-    BASE_DIR / 'static'
-]
+# STATIC_URL = 'static/'
+# STATICFILES_DIRS =[
+#     BASE_DIR / 'static'
+# ]
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -176,6 +193,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_PORT = 587
 # EMAIL_HOST_USER = "shsajal8561@gmail.com"
 # EMAIL_HOST_PASSWORD = "iwib ugse eqyb hclj"
+
 EMAIL_HOST=config('EMAIL_HOST')
 EMAIL_USE_TLS=config('EMAIL_USE_TLS')
 EMAIL_PORT=config('EMAIL_PORT')
