@@ -201,4 +201,4 @@ EMAIL_HOST_USER=config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
 
 
-FRONTEND_URLS= 'https://event-management-1-afm4.onrender.com/'
+FRONTEND_URLS= 'http://127.0.0.1:8000/'
