@@ -40,16 +40,16 @@ ALLOWED_HOSTS = ['*']
 # ]
 
 
-# ALLOWED_HOSTS = [
+ALLOWED_HOSTS = [
  
-# ]
-
-
-CSRF_TRUSTED_ORIGINS = [
-    # "https://event-management-xlch.onrender.com",
-    "https://event-management-1-afm4.onrender.com",
-    "http://127.0.0.1:8000"
 ]
+
+
+# CSRF_TRUSTED_ORIGINS = [
+#     # "https://event-management-xlch.onrender.com",
+#     "https://event-management-1-afm4.onrender.com",
+#     "http://127.0.0.1:8000"
+# ]
 
 # Application definition
 
@@ -116,26 +116,26 @@ WSGI_APPLICATION = 'Event_Management.wsgi.application'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         # 'NAME': 'Event_Management',
-#         'NAME' : config('DB_NAME',default=''),
-#         'USER': config('USER',default=''),
-#         'PASSWORD': config('PASSWORD',default=''),
-#         'HOST': config('HOST',default=''),        
-#         'PORT': config('PORT',cast=int)
-#     }
-# }
-
-
 DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://events_managers_user:KDu6yrs1l9v7aoId90DgiA3tkz8E64GO@dpg-d3207oemcj7s73959od0-a.oregon-postgres.render.com/events_managers',
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'Event_Management',
+        'NAME' : config('DB_NAME',default=''),
+        'USER': config('USER',default=''),
+        'PASSWORD': config('PASSWORD',default=''),
+        'HOST': config('HOST',default=''),        
+        'PORT': config('PORT',cast=int)
+    }
 }
+
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         # Replace this value with your local database's connection string.
+#         default='postgresql://events_managers_user:KDu6yrs1l9v7aoId90DgiA3tkz8E64GO@dpg-d3207oemcj7s73959od0-a.oregon-postgres.render.com/events_managers',
+#         conn_max_age=600
+#     )
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -201,4 +201,4 @@ EMAIL_HOST_USER=config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
 
 
-FRONTEND_URLS= 'http://127.0.0.1:8000/'
+FRONTEND_URLS= 'https://event-management-1-afm4.onrender.com/'
