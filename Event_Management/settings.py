@@ -45,12 +45,13 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
  
 # ]
 
-ALLOWED_HOSTS=['*']
+ALLOWED_HOSTS = [
+    "event-management-2-2ou9.onrender.com",
+    "127.0.0.1",
+    "localhost",
+]
 CSRF_TRUSTED_ORIGINS = [
-    # "https://event-management-xlch.onrender.com",
-    # "https://event-management-1-afm4.onrender.com",
-    'https://*.onrender.com'
-    "http://127.0.0.1:8000"
+    "https://event-management-2-2ou9.onrender.com"
 ]
 
 # Application definition
