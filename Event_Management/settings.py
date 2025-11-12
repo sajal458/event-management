@@ -29,7 +29,8 @@ DEBUG = True
 MEDIA_URL='/media/'
 MEDIA_ROOT=BASE_DIR / 'media'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
 # CSRF_TRUSTED_ORIGIN =['https://*.onrender.com','http://127.0.0.1:8000']
 
 
@@ -44,10 +45,11 @@ ALLOWED_HOSTS = ['*']
  
 # ]
 
-
+ALLOWED_HOSTS=['*']
 CSRF_TRUSTED_ORIGINS = [
     # "https://event-management-xlch.onrender.com",
-    "https://event-management-1-afm4.onrender.com",
+    # "https://event-management-1-afm4.onrender.com",
+    'https://*.onrender.com'
     "http://127.0.0.1:8000"
 ]
 
@@ -105,7 +107,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Event_Management.wsgi.application'
 
-
+AUTH_USER_MODEL='Users.CustomUser'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
@@ -116,26 +118,26 @@ WSGI_APPLICATION = 'Event_Management.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        # 'NAME': 'Event_Management',
-        'NAME' : config('DB_NAME',default=''),
-        'USER': config('USER',default=''),
-        'PASSWORD': config('PASSWORD',default=''),
-        'HOST': config('HOST',default=''),        
-        'PORT': config('PORT',cast=int)
-    }
-}
-
-
 # DATABASES = {
-#     'default': dj_database_url.config(
-#         # Replace this value with your local database's connection string.
-#         default='postgresql://events_managers_user:KDu6yrs1l9v7aoId90DgiA3tkz8E64GO@dpg-d3207oemcj7s73959od0-a.oregon-postgres.render.com/events_managers',
-#         conn_max_age=600
-#     )
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         # 'NAME': 'Event_Management',
+#         'NAME' : config('DB_NAME',default=''),
+#         'USER': config('USER',default=''),
+#         'PASSWORD': config('PASSWORD',default=''),
+#         'HOST': config('HOST',default=''),        
+#         'PORT': config('PORT',cast=int)
+#     }
 # }
+
+
+DATABASES = {
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgresql://final_event_user:PvFwr4rbrrfIpfwIcQfcIqyxMn4WwzpE@dpg-d4a6avidbo4c73c5tjp0-a.oregon-postgres.render.com/final_event',
+        conn_max_age=600
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -202,3 +204,6 @@ EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
 
 
 FRONTEND_URLS= 'http://127.0.0.1:8000/'
+
+LOGIN_URL= '/users/sign-in/'
+LOGIN_REDIRECT_URL= '/'

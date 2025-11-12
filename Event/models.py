@@ -1,15 +1,17 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 
 
 from django.db import models
-from django.contrib.auth.models import User
+
 from django.db.models.signals import post_save,m2m_changed
 from django.dispatch import receiver
 from django.core.mail import send_mail
 
-
+from django.contrib.auth import get_user_model
+User=get_user_model()
 
 class Event(models.Model):
     name = models.CharField(max_length=100)

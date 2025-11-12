@@ -10,6 +10,12 @@ from Event.models import Category, Event
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.decorators import login_required,user_passes_test,permission_required
+from django.views import View
+from django.views.generic import ListView,DetailView,UpdateView
+from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
+
+
 # Create your views here.
 def view_task(request):
     return HttpResponse("hello")
@@ -66,6 +72,23 @@ def create_task(request):
 
     return render(request, "form.html", {"form": form})
 
+create_decorator=[login_required,permission_required("Event.add_event",login_url='no-permission')]
+
+
+class Create_Event(LoginRequiredMixin,PermissionRequiredMixin,View):
+    permission_required="Event.add_event"
+    login_url="no-permission"
+    def get(self,request,*args, **kwargs):
+        form = TaskModel()
+        return render(request, "form.html", {"form": form})
+    def post(self,request,*args, **kwargs):
+        form = TaskModel(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Event added successfully")
+            return redirect("dashboard")
+
+
 
 # def update_event(request, id):
 #     events = Event.objects.get(id=id)
@@ -118,6 +141,23 @@ def update_event(request, id):
         form = TaskModel(instance=event)
 
     return render(request, "form.html", {"form": form})
+
+
+class Update_Event(UpdateView):
+    model=Event    
+    template_name="form.html"
+    form_class=TaskModel
+    pk_url_kwarg='id'
+    def post(self, request, *args, **kwargs):
+        self.object=self.get_object()
+        form = TaskModel(request.POST, instance=self.get_object())
+        if form.is_valid():
+            form.save()
+            messages.success(request, "The event was edited successfully")
+            return redirect("update_event",self.object.id)
+
+        return redirect('update_event',self.object.id)
+        
 
 @login_required
 @permission_required("Event.delete_event",login_url='no-permission')
@@ -275,6 +315,10 @@ def home(request):
     return render(request, "home.html", context)
 
 
+
+    
+
+
 @login_required
 def event_detail(request,id):
     event=Event.objects.get(id=id)
@@ -282,6 +326,13 @@ def event_detail(request,id):
         "event":event
     }
     return render(request,'details.html',context)
+class Event_detail(DetailView):
+    model=Event
+    template_name="details.html"
+    context_object_name="event"
+    pk_url_kwarg='id'
+
+    
 
 @login_required
 def rsvp(request,event_id):

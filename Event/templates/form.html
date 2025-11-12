@@ -10,7 +10,20 @@
 <body class='bg-orange-100'>
     <div class="pc">
    
-     
+  <div class="mt-4">
+  
+  {% if messages %}
+  {% for message in messages %}
+  <div class="px-2 py-1 {% if 'success' in message.tags %} bg-green-500 {% endif %} ">
+    {{message}}
+
+
+  </div>
+  
+  {% endfor %}
+    
+  {% endif %}
+</div>
     
     </div>
    <div class="flex items-center justify-center">

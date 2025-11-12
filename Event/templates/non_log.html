@@ -84,13 +84,14 @@
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
   </head>
   <body class='bg-orange-100'> {% endcomment %}
+  {% load group_tags %}
     <div class="bg-blue-500 text-white p-4">
       <div class="flex justify-between items-center">
         <div class="text-lg font-bold">
           Sajal
         </div>
         <div class="mr-6">
-          <a href="{% url 'homes' %}" class="mr-4 hover:underline">Home</a>
+          {% comment %} <a href="{% url 'homes' %}" class="mr-4 hover:underline">Home</a>
 
           {% if  user.is_authenticated %}
              <a href="{% url 'select-dashboard' %}" class="ml-4">Dashboard</a>  
@@ -106,7 +107,27 @@
             <a href="{% url 'sign-up' %}" class="ml-4">Sign Up</a>
             <a href="{% url 'sign-in' %}" class="ml-4">Sign In</a>
             
-          {% endif %}
+          {% endif %} {% endcomment %}
+      {% if user.is_authenticated %}
+  {% if user|has_group:"Admin" %}
+    <a href="{% url 'select-dashboard' %}" class="ml-4">Dashboard</a>
+    <a href="{% url 'group-list' %}" class="ml-4">Groups</a>
+    <a href="{% url 'create-group' %}" class="ml-4">Create Group</a>
+    <a href="{% url 'create' %}" class="ml-4">Create Event</a>
+    <a href="{% url 'add_category' %}" class="ml-4">Add Category</a>
+    <a href="{% url 'sign-out' %}" class="bg-red-500 px-2 py-1 rounded">Sign Out</a>
+
+  {% elif user|has_group:"Organizer" %}
+    <a href="{% url 'create-group' %}" class="ml-4">Create Group</a>
+    <a href="{% url 'create' %}" class="ml-4">Create Event</a>
+    <a href="{% url 'sign-out' %}" class="bg-red-500 px-2 py-1 rounded">Sign Out</a>
+  {% else %}
+    <a href="{% url 'sign-out' %}" class="bg-red-500 px-2 py-1 rounded">Sign Out</a>
+  {% endif %}
+{% else %}
+  <a href="{% url 'sign-up' %}" class="ml-4">Sign Up</a>
+  <a href="{% url 'sign-in' %}" class="ml-4">Sign In</a>
+{% endif %}
         </div>
       </div>
     </div>

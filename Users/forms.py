@@ -1,8 +1,11 @@
 
-from django.contrib.auth.models import User,Permission,Group
+from django.contrib.auth.models import Permission,Group
 from django import forms
 import re
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm,PasswordResetForm,SetPasswordForm
+from Users.models import CustomUser
+from django.contrib.auth import get_user_model
+User=get_user_model()
 class Style_Mixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -111,3 +114,64 @@ class CreateGroup(Style_Mixin,forms.ModelForm):
           model=Group
           fields=['name','permissions']
 
+class CustomPasswordChnage(Style_Mixin,PasswordChangeForm):
+     pass
+class CustomResetPasswordForm(Style_Mixin,PasswordResetForm):
+     pass
+class CustomSetPassword(Style_Mixin,SetPasswordForm):
+     pass
+
+class EditProfileform(Style_Mixin,forms.ModelForm):
+    class Meta:
+         model=CustomUser
+         fields=['email', 'first_name','last_name','phone_number','profile_image']     
+         
+
+# class EditProfileform(Style_Mixin, forms.ModelForm):
+#     phone_number = forms.CharField(required=False, label='Phone number')
+#     profile_image = forms.ImageField(required=False, label='Image')
+
+#     class Meta:
+#         model = User
+#         fields = ['username', 'first_name', 'last_name']
+
+#     def __init__(self, *args, **kwargs):
+#         self.userprofile = kwargs.pop('userprofile', None)
+#         super().__init__(*args, **kwargs)
+
+#         if self.userprofile:
+#             self.fields['profile_image'].initial = self.userprofile.profile_image
+#             self.fields['phone_number'].initial = self.userprofile.phone_number
+
+#     def save(self, commit=True):
+#         user = super().save(commit)
+#         if self.userprofile:
+#             self.userprofile.phone_number = self.cleaned_data.get('phone_number')
+#             self.userprofile.profile_image = self.cleaned_data.get('profile_image')
+#             if commit:
+#                 self.userprofile.save()
+#         return user
+# class EditProfileform(Style_Mixin, forms.ModelForm):
+#     phone_number = forms.CharField(required=False, label='Phone number')
+#     profile_image = forms.ImageField(required=False, label='Profile image')
+
+#     class Meta:
+#         model = User
+#         fields = ['username', 'first_name', 'last_name']
+
+#     def __init__(self, *args, **kwargs):
+#         self.userprofile = kwargs.pop('userprofile', None)
+#         super().__init__(*args, **kwargs)
+#         if self.userprofile:
+#             self.fields['phone_number'].initial = self.userprofile.phone_number
+#             self.fields['profile_image'].initial = self.userprofile.profile_image
+
+#     def save(self, commit=True):
+#         user = super().save(commit)
+#         if self.userprofile:
+#             self.userprofile.phone_number = self.cleaned_data.get('phone_number')
+#             if self.cleaned_data.get('profile_image'):
+#                 self.userprofile.profile_image = self.cleaned_data.get('profile_image')
+#             if commit:
+#                 self.userprofile.save()
+#         return user
