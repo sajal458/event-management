@@ -143,7 +143,7 @@ def update_event(request, id):
     return render(request, "form.html", {"form": form})
 
 
-class Update_Event(UpdateView):
+class Update_Event(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
     model=Event    
     template_name="form.html"
     form_class=TaskModel
@@ -326,7 +326,7 @@ def event_detail(request,id):
         "event":event
     }
     return render(request,'details.html',context)
-class Event_detail(DetailView):
+class Event_detail(DetailView,LoginRequiredMixin):
     model=Event
     template_name="details.html"
     context_object_name="event"
