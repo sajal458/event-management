@@ -144,10 +144,12 @@ def update_event(request, id):
 
 
 class Update_Event(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
+
     model=Event    
     template_name="form.html"
     form_class=TaskModel
     pk_url_kwarg='id'
+    permission_required = 'event.change_event'
     def post(self, request, *args, **kwargs):
         self.object=self.get_object()
         form = TaskModel(request.POST, instance=self.get_object())
@@ -157,7 +159,8 @@ class Update_Event(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
             return redirect("update_event",self.object.id)
 
         return redirect('update_event',self.object.id)
-        
+
+
 
 @login_required
 @permission_required("Event.delete_event",login_url='no-permission')
@@ -376,6 +379,11 @@ def add_category(request):
 
 @login_required
 def dashboard(request):
+    print(
+    is_participant(request.user),
+    is_organizer(request.user),
+    is_admin(request.user)
+    )
     if is_participant(request.user):
         return redirect('home')
     elif is_organizer(request.user):

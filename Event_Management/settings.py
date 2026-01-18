@@ -29,7 +29,7 @@ DEBUG = True
 MEDIA_URL='/media/'
 MEDIA_ROOT=BASE_DIR / 'media'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # CSRF_TRUSTED_ORIGIN =['https://*.onrender.com','http://127.0.0.1:8000']
 
@@ -135,10 +135,11 @@ AUTH_USER_MODEL='Users.CustomUser'
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
-        default='postgresql://final_event_user:PvFwr4rbrrfIpfwIcQfcIqyxMn4WwzpE@dpg-d4a6avidbo4c73c5tjp0-a.oregon-postgres.render.com/final_event',
+        default='postgresql://events_managers_db_user:gxd45f1lz7QkTrN8VyIMcfe0i9Rbrlz1@dpg-d5mcqnf5r7bs73d2df90-a.oregon-postgres.render.com/events_managers_db',
         conn_max_age=600
     )
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -190,6 +191,7 @@ STATICFILES_DIRS =[
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_HOST=config('EMAIL_HOST')
 # EMAIL_USE_TLS = True
@@ -197,11 +199,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST_USER = "shsajal8561@gmail.com"
 # EMAIL_HOST_PASSWORD = "iwib ugse eqyb hclj"
 
-# EMAIL_HOST=config('EMAIL_HOST')
-# EMAIL_USE_TLS=config('EMAIL_USE_TLS')
-# EMAIL_PORT=config('EMAIL_PORT')
-# EMAIL_HOST_USER=config('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST=config('EMAIL_HOST')
+EMAIL_USE_TLS=config('EMAIL_USE_TLS')
+EMAIL_PORT=config('EMAIL_PORT')
+EMAIL_HOST_USER=config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=config('EMAIL_HOST_PASSWORD')
+
+
 
 FRONTEND_URLS= 'http://127.0.0.1:8000/'
 

@@ -10,7 +10,7 @@ User=get_user_model()
 def send_activation_email(sender,instance,created, **kwargs):
     if created:
         token=default_token_generator.make_token(instance)
-        activate_url=f"https://event-management-2-2ou9.onrender.com/users/activate/{instance.id}/{token}/"
+        activate_url=f"http://127.0.0.1:8000/users/activate/{instance.id}/{token}/"
         subject="Activate your mail"
         message=f"hi {instance.username},\nplease activate your account by clicking this link\n{activate_url}"
         recepient_list=[instance.email]
