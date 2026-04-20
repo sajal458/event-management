@@ -112,14 +112,17 @@
   {% if user|has_group:"Admin" %}
     <a href="{% url 'select-dashboard' %}" class="ml-4">Dashboard</a>
     <a href="{% url 'group-list' %}" class="ml-4">Groups</a>
+    <a href="{% url 'event-list' %}" class="ml-4">Event</a>
     <a href="{% url 'create-group' %}" class="ml-4">Create Group</a>
     <a href="{% url 'create' %}" class="ml-4">Create Event</a>
     <a href="{% url 'add_category' %}" class="ml-4">Add Category</a>
+    <a href="{% url 'profile' %}" class="ml-4 bg-green-500 px-4 py-2 rounded-md">My Status</a>
     <a href="{% url 'sign-out' %}" class="bg-red-500 px-2 py-1 rounded">Sign Out</a>
 
   {% elif user|has_group:"Organizer" %}
     <a href="{% url 'create-group' %}" class="ml-4">Create Group</a>
     <a href="{% url 'create' %}" class="ml-4">Create Event</a>
+    <a href="{% url 'profile' %}" class="ml-4 bg-green-500 px-4 py-2 rounded-md">My Status</a>
     <a href="{% url 'sign-out' %}" class="bg-red-500 px-2 py-1 rounded">Sign Out</a>
   {% else %}
     <a href="{% url 'sign-out' %}" class="bg-red-500 px-2 py-1 rounded">Sign Out</a>

@@ -114,8 +114,14 @@ class CreateGroup(Style_Mixin,forms.ModelForm):
           model=Group
           fields=['name','permissions']
 
-class CustomPasswordChnage(Style_Mixin,PasswordChangeForm):
-     pass
+class CustomPasswordChnage(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.widget.attrs.update({
+                'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400'
+            })
 class CustomResetPasswordForm(Style_Mixin,PasswordResetForm):
      pass
 class CustomSetPassword(Style_Mixin,SetPasswordForm):

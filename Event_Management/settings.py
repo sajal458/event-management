@@ -119,26 +119,26 @@ AUTH_USER_MODEL='Users.CustomUser'
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         # 'NAME': 'Event_Management',
-#         'NAME' : config('DB_NAME',default=''),
-#         'USER': config('USER',default=''),
-#         'PASSWORD': config('PASSWORD',default=''),
-#         'HOST': config('HOST',default=''),        
-#         'PORT': config('PORT',cast=int)
-#     }
-# }
-
-
 DATABASES = {
-    'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://events_managers_db_user:gxd45f1lz7QkTrN8VyIMcfe0i9Rbrlz1@dpg-d5mcqnf5r7bs73d2df90-a.oregon-postgres.render.com/events_managers_db',
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'Event_Management',
+        'NAME' : config('DB_NAME',default=''),
+        'USER': config('USER',default=''),
+        'PASSWORD': config('PASSWORD',default=''),
+        'HOST': config('HOST',default=''),        
+        'PORT': config('PORT',cast=int)
+    }
 }
+
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         # Replace this value with your local database's connection string.
+#         default='postgresql://events_managers_db_user:gxd45f1lz7QkTrN8VyIMcfe0i9Rbrlz1@dpg-d5mcqnf5r7bs73d2df90-a.oregon-postgres.render.com/events_managers_db',
+#         conn_max_age=600
+#     )
+# }
 
 
 # Password validation

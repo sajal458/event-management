@@ -20,14 +20,24 @@ def send_activation_email(sender,instance,created, **kwargs):
             print(f"failded to sent email to {instance.email}, due to {str(e)}")
 
 
-@receiver(post_save,sender=User)
-def assign_role(sender,instance,created,**kwargs):
-    if created:
-        participant,created=Group.objects.get_or_create(name='participant')
-        instance.groups.add(participant)
-        instance.save()
+# @receiver(post_save,sender=User)
+# def assign_role(sender,instance,created,**kwargs):
+#     if created:
+#         participant,created=Group.objects.get_or_create(name='participant')
+#         instance.groups.add(participant)
+#         instance.save()
     
+@receiver(post_save, sender=User)
+def assign_role(sender, instance, created, **kwargs):
+    if not created:
+        return
 
+    if instance.is_superuser:
+        admin_group, _ = Group.objects.get_or_create(name='Admin')
+        instance.groups.add(admin_group)
+    else:
+        participant_group, _ = Group.objects.get_or_create(name='participant')
+        instance.groups.add(participant_group)
 
 
 # @receiver(post_save,sender=User)

@@ -14,7 +14,7 @@ from django.contrib.auth import get_user_model
 User=get_user_model()
 
 
-
+from django.shortcuts import render, redirect, get_object_or_404
 
 
 
@@ -124,6 +124,10 @@ class ChangePassword(PasswordChangeView):
     form_class=CustomPasswordChnage
 
 
+
+
+
+
 def sign_up(request):
     form = CustomRegistration()
     if request.method == 'POST':
@@ -202,6 +206,26 @@ def admin_dashboard(request):
     user=User.objects.all()
 
     return render(request,'admin_dashboard.html',{'users':user})
+
+
+
+
+@user_passes_test(is_admin, login_url='no-permission')
+def delete_user(request, id):
+    user = get_object_or_404(User, id=id)
+
+    # Prevent deleting yourself (optional but recommended)
+    if request.user == user:
+        messages.error(request, "You cannot delete your own account.")
+        return redirect('admin-dashboard')
+
+    if request.method == "POST":
+        user.delete()
+        messages.success(request, "User deleted successfully.")
+        return redirect('admin-dashboard')
+
+    return redirect('admin-dashboard')
+
 
 @user_passes_test(is_admin,login_url='no-permission')
 def assigned_role(request,user_id):

@@ -43,9 +43,29 @@
 
 </div>
 
-<div class="text-center mt-4 mb-8">
-  <a href="{% url 'create' %}" class="bg-green-500 px-4 py-1 ml-4">create event</a>
-</div>
+
+<div class="m-6">
+
+<form method="GET" class="mb-4 flex justify-center items-center gap-2">
+
+    <input 
+        type="text"
+        name="search"
+        value="{{ search }}"
+        placeholder="Search by name or location..."
+        class="border px-4 py-2 rounded-lg w-72 focus:outline-none focus:ring-2 focus:ring-blue-400"
+    >
+
+    <input type="hidden" name="type" value="{{ type }}">
+
+    <button 
+        type="submit"
+        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+        Search
+    </button>
+
+</form>
+
 
 <div class="mt-4">
   
@@ -62,7 +82,26 @@
   {% endif %}
 </div>
 
-<h1 class="text-4xl mt-6 mb-6">{{event_condition}}</h1>
+<div class="mt-6 mb-6 p-4 rounded-xl shadow-sm bg-white border flex items-center justify-between">
+  
+  <h1 class="text-2xl font-semibold text-gray-800">
+    {{ event_condition }}
+  </h1>
+
+  <span class="
+    text-sm font-medium px-3 py-1 rounded-full
+    {% if event_condition == 'Today Events' %}
+      bg-green-100 text-green-700
+    {% elif event_condition == 'Past Events' %}
+      bg-gray-200 text-gray-700
+    {% else %}
+      bg-blue-100 text-blue-700
+    {% endif %}
+  ">
+    Status
+  </span>
+
+</div>
 <div class="m-6">
 
 <div class="bg-white rounded-xl shadow sm ">

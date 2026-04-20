@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+
+<div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg">
+
+    <h2 class="text-2xl font-bold mb-6 text-center">Edit Event</h2>
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-5">
+        {% csrf_token %}
+
+        <!-- NAME -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Event Name</label>
+            <input type="text" name="name"
+                   value="{{ form.name.value|default_if_none:'' }}"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400">
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <textarea name="description" rows="3"
+                      class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400">{{ form.description.value|default_if_none:'' }}</textarea>
+        </div>
+
+        <!-- DATE -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+            <input type="date" name="date"
+                   value="{{ form.date.value|date:'Y-m-d' }}"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400">
+        </div>
+
+        <!-- TIME -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Time</label>
+           <input type="time" name="time"
+       value="{{ form.time.value|time:'H:i' }}"
+       class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400">
+        </div>
+
+        <!-- LOCATION -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+            <input type="text" name="location"
+                   value="{{ form.location.value|default_if_none:'' }}"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400">
+        </div>
+
+        <!-- CATEGORY -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <input type="text" name="category"
+                   value="{{ form.category.value|default_if_none:'' }}"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400">
+        </div>
+
+        <!-- IMAGE / ASSET -->
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Image</label>
+            <input type="file" name="asset"
+                   class="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white">
+
+            {% if form.instance.asset %}
+                <p class="text-sm text-gray-500 mt-1">
+                    Current: {{ form.instance.asset.url }}
+                </p>
+            {% endif %}
+        </div>
+
+        <!-- ERRORS -->
+        {% if form.errors %}
+            <div class="bg-red-100 text-red-600 p-3 rounded">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+
+        <!-- BUTTONS -->
+        <div class="flex justify-between pt-4">
+            <button type="submit"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg transition">
+                Update
+            </button>
+
+            <a href="{% url 'select-dashboard' %}"
+               class="bg-gray-400 hover:bg-gray-500 text-white px-5 py-2 rounded-lg transition">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>

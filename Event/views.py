@@ -206,39 +206,95 @@ def delete_event(request,id):
 #     }
 #     return render(request,'dashboard.html',context)
 
+# @login_required
+# @permission_required("Event.add_event",login_url='no-permission')
+# def show_dashboard(request):
+#     type = request.GET.get("type", "all")
+#     today = timezone.now().date()
+
+#     base_query = Event.objects.prefetch_related("participants").select_related("category")
+#     if type == "upcoming":
+#         event = base_query.filter(date__gt=today)
+#         event_condition = "upcoming events"
+#     elif type == "past":
+#         event_condition = "past events"
+#         event = base_query.filter(date__lt=today)
+#     elif type == "all_event":
+#         event_condition = "all events"
+#         event = base_query.all()
+#     elif type == "all":
+#         event_condition = "Todays events"
+#         event = base_query.filter(date=today)
+
+#     counts = Event.objects.annotate(num_participants=Count("participants")).aggregate(
+#         total=Count("id", distinct=True),
+#         participant_count=Count("participants", distinct=True),
+#         upcoming=Count("id", filter=Q(date__gte=today), distinct=True),
+#         past=Count("id", filter=Q(date__lt=today), distinct=True),
+#     )
+#     context = {
+#         "events": event,
+#         "count": counts,
+#         "event_condition": event_condition,
+#     }
+#     return render(request, "dashboard.html", context)
+
+
+
+
+
 @login_required
-@permission_required("Event.add_event",login_url='no-permission')
+@permission_required("Event.add_event", login_url='no-permission')
 def show_dashboard(request):
     type = request.GET.get("type", "all")
+    search = request.GET.get("search", "").strip()
+
     today = timezone.now().date()
 
     base_query = Event.objects.prefetch_related("participants").select_related("category")
+
+    # Filter by type
     if type == "upcoming":
         event = base_query.filter(date__gt=today)
-        event_condition = "upcoming events"
-    elif type == "past":
-        event_condition = "past events"
-        event = base_query.filter(date__lt=today)
-    elif type == "all_event":
-        event_condition = "all events"
-        event = base_query.all()
-    elif type == "all":
-        event_condition = "Todays events"
-        event = base_query.filter(date=today)
+        event_condition = "Upcoming Events"
 
-    counts = Event.objects.annotate(num_participants=Count("participants")).aggregate(
+    elif type == "past":
+        event = base_query.filter(date__lt=today)
+        event_condition = "Past Events"
+
+    elif type == "all_event":
+        event = base_query.all()
+        event_condition = "All Events"
+
+    else:
+        event = base_query.filter(date=today)
+        event_condition = "Today's Events"
+
+    # SEARCH FILTER
+    if search:
+        event = event.filter(
+            Q(name__icontains=search) |
+            Q(location__icontains=search)
+        )
+
+    counts = Event.objects.annotate(
+        num_participants=Count("participants")
+    ).aggregate(
         total=Count("id", distinct=True),
         participant_count=Count("participants", distinct=True),
         upcoming=Count("id", filter=Q(date__gte=today), distinct=True),
         past=Count("id", filter=Q(date__lt=today), distinct=True),
     )
+
     context = {
         "events": event,
         "count": counts,
         "event_condition": event_condition,
+        "search": search,
+        "type": type,
     }
-    return render(request, "dashboard.html", context)
 
+    return render(request, "dashboard.html", context)
 
 
 # def home(request):
@@ -390,3 +446,36 @@ def dashboard(request):
         return redirect('dashboard')
     elif is_admin(request.user):
         return redirect('admin-dashboard')
+    
+
+
+
+
+
+
+
+from django.urls import reverse_lazy
+from django.views.generic import UpdateView, DeleteView
+from .models import Event
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+# UPDATE VIEW
+class EventUpdateView(LoginRequiredMixin, UpdateView):
+    model = Event
+    fields = ['name', 'description', 'date', 'time', 'asset', 'location', 'category']
+    template_name = 'event_edit.html'
+    success_url = reverse_lazy('select-dashboard')
+
+
+# DELETE VIEW
+class EventDeleteView(LoginRequiredMixin, DeleteView):
+    model = Event
+    success_url = reverse_lazy('select-dashboard')
+
+    def post(self, request, *args, **kwargs):
+        return self.delete(request, *args, **kwargs)
+    
+@login_required
+def event_list(request):
+    events = Event.objects.all()   # fetch all events
+    return render(request, 'event_list.html', {'events': events})
